@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import ParticleBackground from "../components/ParticleBackground.jsx";
 
+// (ตัวแปร Animation ... ไม่ต้องแก้)
 const sentence = {
   hidden: { opacity: 0 },
   visible: {
@@ -23,7 +24,10 @@ const letter = {
 
 export default function Landing() {
   const navigate = useNavigate();
-  const title = "Hi, I'm Noppanat";
+
+  // 1. (THE FIX) แยกข้อความออกจากกัน
+  const line1 = "Hi, I'm ";
+  const name = "Noppanat"; 
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center 
@@ -31,21 +35,31 @@ export default function Landing() {
       
       <ParticleBackground />
 
-      {/* (H1 ... ไม่ต้องแก้) */}
+      {/* 2. (THE FIX) แก้ไข H1 ให้ Render 2 ส่วน */}
       <motion.h1 
         className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6 select-none"
         variants={sentence}
         initial="hidden"
         animate="visible"
       >
-        {title.split("").map((char, index) => (
+        {/* ส่วนที่ 1: "Hi, I'm " */}
+        {line1.split("").map((char, index) => (
           <motion.span key={char + "-" + index} variants={letter} className="inline-block">
             {char === " " ? "\u00A0" : char}
           </motion.span>
         ))}
+        
+        {/* ส่วนที่ 2: "Noppanat" (หุ้มด้วย span ที่สั่ง 'ห้ามตัดคำ') */}
+        <span className="inline-block whitespace-nowrap">
+          {name.split("").map((char, index) => (
+            <motion.span key={char + "-" + index} variants={letter} className="inline-block">
+              {char}
+            </motion.span>
+          ))}
+        </span>
       </motion.h1>
 
-      {/* 1. แก้ไข <motion.p> ตรงนี้ */}
+      {/* (motion.p ... ไม่ต้องแก้) */}
       <motion.p 
         className="text-gray-300 mb-10 text-lg md:text-xl max-w-lg select-none"
         initial={{ opacity: 0, y: 20 }}
