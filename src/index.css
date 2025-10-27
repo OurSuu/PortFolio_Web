@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-neutral-200 font-sans;
+    background-color: #0a0a0a;
+    background-image: linear-gradient(to bottom, #1a1a1a, #0a0a0a 25%);
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
+  /* นี่คือส่วนที่เราจะแก้:
+     เราจะบังคับ 'cursor: none' กับทุกอย่าง (*)
+     และรวมถึงลิงก์ (a), ปุ่ม (button) ด้วย
+     โดยใช้ !important เพื่อความชัวร์ว่ามันจะทับสไตล์อื่นได้
+  */
+  @media (pointer: fine) {
+    html,
+    body,
+    *,
+    a,
+    button {
+      cursor: none !important;
+    }
+  }
+}
