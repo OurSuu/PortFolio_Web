@@ -1,165 +1,148 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ProjectCard from "../components/ProjectCard.jsx";
-import ProjectModal from "../components/ProjectModal.jsx";
-import ContactModal from "../components/ContactModal.jsx";
-import ParticleBackground from "../components/ParticleBackground.jsx";
+// src/pages/Main.jsx
 
-// 1. แก้ไข 'fadeInUp' variant ตรงนี้
+import { motion } from "framer-motion";
+import ParticleBackground from "../components/ParticleBackground.jsx";
+import ProjectShowcase from "../components/ProjectShowcase.jsx";
+import { FaGithub, FaYoutube } from "react-icons/fa";
+
+// (fadeInUp, allProjects ... ไม่ต้องแก้)
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
-    opacity: 1,
+    opacity: 1, 
     y: 0,
-    // 2. ลบ 'translateY' ออก
-    transition: {
-      // 3. ลบ 'translateY' ออก
-      y: { duration: 0.6, ease: "easeOut" },
-      opacity: { duration: 0.6, ease: "easeOut" }
-    }
+    transition: { duration: 0.6, ease: "easeOut" }
   }
 };
 
-const categories = [
-  {
-    categoryTitle: "Game Projects",
-    type: "Game",
-    desc: "โปรเจกต์เกมทั้งหมดที่ฉันเคยทำ",
-    projects: [
-      {
-        title: "My Game (เกมแรก)",
-        details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ใช้เวลาทำ 3 เดือน",
-        imageUrl: "https://via.placeholder.com/800x450.png?text=Game+1+Screenshot",
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      },
-      {
-        title: "เกมที่สอง (แนว RPG)",
-        details: "รายละเอียดของเกมที่สอง...\n- ทำด้วย Godot",
-        imageUrl: "https://via.placeholder.com/800x450.png?text=Game+2+Screenshot",
-        videoUrl: "https://www.youtube.com/embed/another-video-id"
-      }
-      // ... เพิ่ม 'เกม' ที่ 3, 4, 5... ตรงนี้
-    ]
+const allProjects = [
+  { 
+    title: "My Game", 
+    type: "Game", 
+    details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ใช้เวลาทำ 3 เดือน",
+    imageUrl: "/game-image.png",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
-  {
-    categoryTitle: "Website Projects",
-    type: "Website",
-    desc: "เว็บไซต์และเว็บแอปพลิเคชันที่ฉันพัฒนา",
-    projects: [
-      {
-        title: "Portfolio Site (เว็บนี้)",
-        details: "รายละเอียดของเว็บ Portfolio นี้...\n- สร้างด้วย React, Vite, Tailwind",
-        imageUrl: "https://via.placeholder.com/800x450.png?text=Website+1+Screenshot",
-        link: "https://keyvault-mwda.onrender.com"
-      },
-      {
-        title: "KeyVault (เว็บที่ 2)",
-        details: "รายละเอียดของเว็บ KeyVault...\n- ระบบจัดการรหัสผ่าน",
-        imageUrl:"/KeyVaultImg.png",
-        link: "https://keyvault-mwda.onrender.com/"
-      }
-      // ... เพิ่ม 'เว็บ' ที่ 3, 4, 5... ตรงนี้
-    ]
-  }
+  { 
+    title: "KeyVault Website", 
+    type: "Website", 
+    details: "รายละเอียดของเว็บ KeyVault...\n- ระบบจัดการรหัสผ่าน\n- สร้างด้วย React, Vite, Tailwind",
+    imageUrl: "/KeyVaultImg.png",
+    link: "https://keyvault-mwda.onrender.com"
+  },
+  { 
+    title: "เกมที่สอง (แนว RPG)", 
+    type: "Game", 
+    details: "รายละเอียดของเกมที่สอง...\n- ทำด้วย Godot",
+    imageUrl: "https://via.placeholder.com/800x600.png?text=Game+2",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  // ... เพิ่มโปรเจกต์ที่ 3, 4, 5... ตรงนี้ได้เลย
 ];
 
 export default function Main() {
   
-  // (State ... ไม่ต้องแก้)
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-
   return (
-    <div className="min-h-screen px-6 md:px-20 py-10 pt-32 relative"> 
+    <div className="min-h-screen px-6 md:px-20 py-10 pt-32 
+                    relative flex flex-col gap-20 md:gap-32"> 
+      
       <ParticleBackground />
 
-      {/* (My Works ... ไม่ต้องแก้) */}
-      <motion.h2 
-        className="text-4xl md:text-5xl font-bold mb-12 text-center text-[#08fdd8] select-none"
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        My Works
-      </motion.h2>
-
-      {/* (ProjectCard ... ไม่ต้องแก้) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        {categories.map((cat, i) => (
-          <ProjectCard 
-            key={i} 
-            category={cat}
-            index={i} 
-            onCardClick={() => setSelectedCategory(cat)}
-          />
-        ))}
-      </div>
-
-      {/* 1. แก้ 'Contact Me' */}
+      {/* 1. (แก้!) ส่วน "About Me" */}
       <motion.div 
-        className="mt-20 max-w-3xl mx-auto p-8 
-                   text-center
-                   bg-white/5 backdrop-blur-lg 
-                   border border-white/10 rounded-2xl
-                   transition-all duration-300
-                   
-                   hover:border-[#08fdd8]/80
-                   hover:shadow-2xl hover:shadow-[#08fdd8]/30
-                   
-                   -rotate-1
-                   hover:rotate-0
-                   "
+        className="flex flex-col md:flex-row items-center gap-8 max-w-5xl mx-auto"
         variants={fadeInUp}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        whileHover={{ y: -8, scale: 1.03 }}
+        animate="visible"
       >
-        <h3 className="text-3xl mb-4 text-[#08fdd8] select-none">Contact Me</h3>
-        <p className="text-gray-300 select-none">Let’s create something amazing together!</p>
-        
-        <div className="mt-6 flex justify-center gap-8 text-lg">
-          <button 
-            onClick={() => setIsContactModalOpen(true)} 
-            className="text-gray-300 hover:text-[#08fdd8] transition-colors"
-          >
-            Email
-          </button>
-          <a 
-            href="https://github.com/OurSuu"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-300 hover:text-[#08fdd8] transition-colors"
-          >
-            GitHub
-          </a>
-          <a 
-            href="https://www.youtube.com/@noppanatnoppakouw5423/videos"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-300 hover:text-[#08fdd8] transition-colors"
-          >
-            YouTube
-          </a>
+        {/* 2. (แก้!) เพิ่ม Animation และ Filter ให้รูป */}
+        <motion.img 
+          src="/MyPhoto.jpg" // ◀◀◀ (สำคัญ!) รูปคือ /MyPhoto.jpg/
+          alt="Noppanat's Profile" 
+          className="w-48 h-48 md:w-60 md:h-60 rounded-full object-cover 
+                     border-4 border-[#08fdd8]/50 shadow-xl
+                     grayscale hover:grayscale-0 
+                     contrast-125 hover:contrast-100
+                     brightness-75 hover:brightness-100
+                     transition-all duration-500 cursor-pointer"
+          // 4. (ใหม่!) Animation เมื่อรูปโหลดเข้ามา
+          initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          // 5. (ใหม่!) Animation เมื่อชี้
+          whileHover={{ 
+            scale: 1.05, 
+            y: -8, 
+            boxShadow: "0 20px 25px -5px rgba(8, 253, 216, 0.3)", // Glow
+            transition: { type: "spring", stiffness: 300, damping: 10 }
+          }}
+        />
+        <div className="text-center md:text-left">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            I'm <span className="text-[#08fdd8]">Noppanat</span>.
+          </h2>
+          <p className="text-lg text-gray-300 max-w-lg">
+            (ใส่คำอธิบายเกี่ยวกับตัวคุณตรงนี้)... ผมคือ Web & Game Developer 
+            ที่หลงใหลในการสร้างประสบการณ์ดิจิทัลที่น่าตื่นเต้น 
+            เชี่ยวชาญใน React, Unity, และ Node.js
+          </p>
         </div>
       </motion.div>
 
-      {/* (Modal ... ไม่ต้องแก้) */}
-      <AnimatePresence>
-        {selectedCategory && (
-          <ProjectModal
-            category={selectedCategory}
-            onClose={() => setSelectedCategory(null)}
-          />
-        )}
+      {/* (My Works ... ไม่ต้องแก้) */}
+      <div className="flex flex-col gap-16 md:gap-24 items-center">
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold text-[#08fdd8] select-none"
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+        >
+          My Works
+        </motion.h2>
+
+        <div className="flex flex-col gap-16 md:gap-24 w-full">
+          {allProjects.map((project, index) => (
+            <ProjectShowcase 
+              key={project.title + index}
+              project={project} 
+              index={index} 
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* (Contact ... ไม่ต้องแก้) */}
+      <motion.div 
+        className="mt-20 max-w-5xl mx-auto w-full"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ amount: 0.3 }}
+      >
+        <h3 className="text-3xl font-bold text-[#08fdd8] mb-6 select-none">Contact</h3>
         
-        {isContactModalOpen && (
-          <ContactModal
-            onClose={() => setIsContactModalOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+        <p className="text-lg text-gray-300 max-w-2xl mb-4 select-none">
+          I'm currently looking to join a cross-functional team that values improving people's lives through accessible design. or have a project in mind? Let's connect.
+        </p>
+        
+        <a 
+          href="mailto:Noppanatyukun@gmail.com" 
+          className="text-lg text-white font-semibold hover:text-[#08fdd8] transition-colors"
+        >
+          Noppanatyukun@gmail.com
+        </a>
+
+        <div className="flex gap-6 mt-6">
+          <a href="https://github.com/OurSuu" target="_blank" rel="noopener noreferrer" 
+             className="text-gray-400 hover:text-white text-3xl transition-colors">
+            <FaGithub />
+          </a>
+          <a href="https://www.youtube.com/@noppanatnoppakouw5423/videos" target="_blank" rel="noopener noreferrer" 
+             className="text-gray-400 hover:text-white text-3xl transition-colors">
+            <FaYoutube />
+          </a>
+        </div>
+      </motion.div>
     </div>
   );
 }
