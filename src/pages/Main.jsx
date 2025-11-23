@@ -1,13 +1,14 @@
 // src/pages/Main.jsx
 
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import ParticleBackground from "../components/ParticleBackground.jsx";
 import ProjectShowcase from "../components/ProjectShowcase.jsx";
 import { FaGithub, FaYoutube } from "react-icons/fa";
+import { useEffect } from "react";
 
-// (fadeInUp, allProjects ... ไม่ต้องแก้)
+// Animation Variants
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 50 }, // เพิ่มระยะ y ให้ดูมีการเคลื่อนไหวชัดขึ้น
   visible: { 
     opacity: 1, 
     y: 0,
@@ -31,78 +32,117 @@ const allProjects = [
     link: "https://keyvault-mwda.onrender.com"
   },
   { 
-    title: "เกมที่สอง (แนว RPG)", 
-    type: "Game", 
-    details: "รายละเอียดของเกมที่สอง...\n- ทำด้วย Godot",
-    imageUrl: "https://via.placeholder.com/800x600.png?text=Game+2",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    title: "Stock Management Web App", 
+    type: "Website", 
+    details: "ทำเว็บระบบจัดการสต็อกสินค้าให้กับแบรนด์แห่งหนึ่ง\n- อัปเดตและตรวจสอบสินค้า\n- วิเคราะห์/ดูยอดเคลื่อนไหวในแต่ละเดือน\n- พัฒนา React, Vite, Tailwind\n- มีระบบหลังบ้านและฟีเจอร์จัดการแบบครบถ้วน",
+    imageUrl: "/Stock-Manager-Mo.png",
+    link: "https://stock-management-app-two.vercel.app/"
   },
-  // ... เพิ่มโปรเจกต์ที่ 3, 4, 5... ตรงนี้ได้เลย
 ];
 
 export default function Main() {
+
+  function ProjectTitleSelectable({ title }) {
+    return <span className="select-text">{title}</span>;
+  }
+
+  function ProjectShowcaseSelectable({ project, index }) {
+    return <ProjectShowcase project={{ ...project, titleComponent: <ProjectTitleSelectable title={project.title} /> }} index={index} />;
+  }
+
+  // Animation สำหรับรูปโปรไฟล์ (Loop ตลอดเวลา)
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({
+      rotate: [0, 5, -5, 0], // ลดองศาลงนิดนึงให้ดูนุ่มนวลขึ้น
+      scale: [1, 1.05, 0.95, 1],
+      filter: [
+        "grayscale(0.85) contrast(1.25) brightness(0.85)",
+        "grayscale(0) contrast(1.1) brightness(1)", // ช่วงกลางให้เห็นสีจริงบ้าง
+        "grayscale(0.85) contrast(1.25) brightness(0.85)"
+      ],
+      transition: {
+        duration: 6, // ช้าลงหน่อยให้ดู Relax
+        times: [0, 0.5, 1],
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    });
+  }, [controls]);
   
   return (
     <div className="min-h-screen px-6 md:px-20 py-10 pt-32 
-                    relative flex flex-col gap-20 md:gap-32"> 
+                    relative flex flex-col gap-20 md:gap-32 select-none overflow-hidden"> 
       
       <ParticleBackground />
 
-      {/* 1. (แก้!) ส่วน "About Me" */}
+      {/* --- About Me (แก้ไขใหม่) --- */}
       <motion.div 
-        className="flex flex-col md:flex-row items-center gap-8 max-w-5xl mx-auto"
+        className="flex flex-col md:flex-row items-center gap-10 md:gap-16 
+                   max-w-5xl mx-auto p-8 md:p-12 
+                   bg-gray-900/40 backdrop-blur-xl 
+                   rounded-3xl border border-white/10 shadow-2xl"
         variants={fadeInUp}
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3 }}
       >
-        {/* 2. (แก้!) เพิ่ม Animation และ Filter ให้รูป */}
-        <motion.img 
-          src="/MyPhoto.jpg" // ◀◀◀ (สำคัญ!) รูปคือ /MyPhoto.jpg/
-          alt="Noppanat's Profile" 
-          className="w-48 h-48 md:w-60 md:h-60 rounded-full object-cover 
-                     border-4 border-[#08fdd8]/50 shadow-xl
-                     grayscale hover:grayscale-0 
-                     contrast-125 hover:contrast-100
-                     brightness-75 hover:brightness-100
-                     transition-all duration-500 cursor-pointer"
-          // 4. (ใหม่!) Animation เมื่อรูปโหลดเข้ามา
-          initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          // 5. (ใหม่!) Animation เมื่อชี้
-          whileHover={{ 
-            scale: 1.05, 
-            y: -8, 
-            boxShadow: "0 20px 25px -5px rgba(8, 253, 216, 0.3)", // Glow
-            transition: { type: "spring", stiffness: 300, damping: 10 }
-          }}
-        />
-        <div className="text-center md:text-left">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            I'm <span className="text-[#08fdd8]">Noppanat</span>.
+        {/* Profile Picture */}
+        <div className="relative group">
+          {/* กรอบเรืองแสงด้านหลังรูป */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#08fdd8] to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+          
+          <motion.img 
+            src="/photo2.jpg"
+            alt="Noppanat's Profile"
+            className="relative w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover 
+                       border-2 border-white/20 shadow-2xl z-10"
+            animate={controls}
+            whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
+          />
+        </div>
+        {/* Text Content */}
+        <div className="flex-1 flex flex-col text-center md:text-left">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
+            <span className="opacity-70">I'm </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#08fdd8] to-[#08fdd8]/70">
+              Noppanat
+            </span>
+            <span className="text-[#08fdd8]">.</span>
           </h2>
-          <p className="text-lg text-gray-300 max-w-lg">
-            (ใส่คำอธิบายเกี่ยวกับตัวคุณตรงนี้)... ผมคือ Web & Game Developer 
-            ที่หลงใหลในการสร้างประสบการณ์ดิจิทัลที่น่าตื่นเต้น 
-            เชี่ยวชาญใน React, Unity, และ Node.js
-          </p>
+          
+          <div className="space-y-4 text-base md:text-lg text-gray-400 leading-relaxed">
+            <p>
+              I was born on February 17, 2006 and am currently pursuing my studies at <span className="text-gray-200 font-medium">Rangsit University</span>, Faculty of Digital Innovation Technology, majoring in Computer Games and Esports.
+            </p>
+            <p>
+              While my academic journey began in the world of game development, I soon discovered a true passion for <span className="text-[#08fdd8] font-medium">Web Development</span>. 
+            </p>
+            <p>
+              Merging creativity with modern technology, I aspire to craft visually captivating and seamless digital experiences.
+            </p>
+          </div>
         </div>
       </motion.div>
 
-      {/* (My Works ... ไม่ต้องแก้) */}
+      {/* --- My Works --- */}
       <div className="flex flex-col gap-16 md:gap-24 items-center">
         <motion.h2 
-          className="text-4xl md:text-5xl font-bold text-[#08fdd8] select-none"
+          className="text-4xl md:text-6xl font-bold text-white select-none relative"
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: false }}
         >
           My Works
+          {/* ขีดเส้นใต้ตกแต่ง */}
+          <span className="block h-1 w-24 bg-[#08fdd8] mt-4 mx-auto rounded-full"></span>
         </motion.h2>
 
         <div className="flex flex-col gap-16 md:gap-24 w-full">
           {allProjects.map((project, index) => (
-            <ProjectShowcase 
+            <ProjectShowcaseSelectable 
               key={project.title + index}
               project={project} 
               index={index} 
@@ -111,34 +151,36 @@ export default function Main() {
         </div>
       </div>
 
-      {/* (Contact ... ไม่ต้องแก้) */}
+      {/* --- Contact --- */}
       <motion.div 
-        className="mt-20 max-w-5xl mx-auto w-full"
+        className="mt-10 mb-20 max-w-4xl mx-auto w-full text-center"
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
-        viewport={{ amount: 0.3 }}
+        viewport={{ once: false, amount: 0.3 }}
       >
-        <h3 className="text-3xl font-bold text-[#08fdd8] mb-6 select-none">Contact</h3>
+        <h3 className="text-4xl font-bold text-white mb-6">Let's Connect</h3>
         
-        <p className="text-lg text-gray-300 max-w-2xl mb-4 select-none">
-          I'm currently looking to join a cross-functional team that values improving people's lives through accessible design. or have a project in mind? Let's connect.
+        <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+          If you're interested in collaborating or simply wish to connect, please feel free to reach out.
         </p>
         
         <a 
           href="mailto:Noppanatyukun@gmail.com" 
-          className="text-lg text-white font-semibold hover:text-[#08fdd8] transition-colors"
+          className="inline-block px-8 py-4 bg-[#08fdd8]/10 border border-[#08fdd8] rounded-full 
+                     text-[#08fdd8] font-bold text-lg hover:bg-[#08fdd8] hover:text-black 
+                     transition-all duration-300 hover:scale-105 select-text"
         >
           Noppanatyukun@gmail.com
         </a>
 
-        <div className="flex gap-6 mt-6">
+        <div className="flex justify-center gap-8 mt-10">
           <a href="https://github.com/OurSuu" target="_blank" rel="noopener noreferrer" 
-             className="text-gray-400 hover:text-white text-3xl transition-colors">
+             className="text-gray-500 hover:text-white text-4xl transition-all hover:scale-110">
             <FaGithub />
           </a>
           <a href="https://www.youtube.com/@noppanatnoppakouw5423/videos" target="_blank" rel="noopener noreferrer" 
-             className="text-gray-400 hover:text-white text-3xl transition-colors">
+             className="text-gray-500 hover:text-red-500 text-4xl transition-all hover:scale-110">
             <FaYoutube />
           </a>
         </div>
