@@ -165,14 +165,12 @@ export default function Main() {
           If you're interested in collaborating or simply wish to connect, please feel free to reach out.
         </p>
         
-        <a 
-          href="mailto:Noppanatyukun@gmail.com" 
+        <span
           className="inline-block px-8 py-4 bg-[#08fdd8]/10 border border-[#08fdd8] rounded-full 
-                     text-[#08fdd8] font-bold text-lg hover:bg-[#08fdd8] hover:text-black 
-                     transition-all duration-300 hover:scale-105 select-text"
+                     text-[#08fdd8] font-bold text-lg transition-all duration-300 select-text"
         >
           Noppanatyukun@gmail.com
-        </a>
+        </span>
 
         <div className="flex justify-center gap-8 mt-10">
           <a href="https://github.com/OurSuu" target="_blank" rel="noopener noreferrer" 
