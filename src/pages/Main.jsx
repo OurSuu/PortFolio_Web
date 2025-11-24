@@ -20,7 +20,7 @@ const allProjects = [
   { 
     title: "My Game", 
     type: "Game", 
-    details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ใช้เวลาทำ 3 เดือน",
+    details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ยังไม่มีเอามาใส่",
     imageUrl: "/game-image.png",
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
@@ -37,6 +37,13 @@ const allProjects = [
     details: "ทำเว็บระบบจัดการสต็อกสินค้าให้กับแบรนด์แห่งหนึ่ง\n- อัปเดตและตรวจสอบสินค้า\n- วิเคราะห์/ดูยอดเคลื่อนไหวในแต่ละเดือน\n- พัฒนา React, Vite, Tailwind\n- มีระบบหลังบ้านและฟีเจอร์จัดการแบบครบถ้วน",
     imageUrl: "/Stock-Manager-Mo.png",
     link: "https://stock-management-app-two.vercel.app/"
+  },
+  { 
+    title: "TaxEasy - เว็บคำนวณภาษีแม่ค้าออนไลน์",
+    type: "Website",
+    details: "TaxEasy คือเว็บคำนวณภาษีสำหรับแม่ค้าออนไลน์ ใช้งานฟรี ไม่ต้องสมัครสมาชิก ใช้ง่าย ปลอดภัย ไม่มีบันทึกข้อมูลส่วนตัว\n- พัฒนาด้วย React + Tailwind CSS\n- มีแผนจะใส่ Google AdSense ในอนาคต\n- หากมีงบประมาณจะเปลี่ยนเป็นโดเมน .com",
+    imageUrl: "/tax-easy.png",
+    link: "https://tax-easy-rose.vercel.app/"
   },
 ];
 
