@@ -30,14 +30,18 @@ export default function Landing() {
   const name = "Noppanat"; 
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center 
-                    relative overflow-hidden px-4 text-center">
-      
+    <div
+      className="min-h-screen w-full flex flex-col items-center justify-center 
+                  relative overflow-hidden px-4 text-center select-none"
+      style={{ userSelect: "none" }}
+      tabIndex={-1}
+      aria-hidden="true"
+    >
       <ParticleBackground />
 
       {/* 2. (THE FIX) แก้ไข H1 ให้ Render 2 ส่วน */}
       <motion.h1 
-        className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6 select-none"
+        className="text-5xl md:text-8xl font-bold tracking-tight text-white mb-6"
         variants={sentence}
         initial="hidden"
         animate="visible"
@@ -61,7 +65,7 @@ export default function Landing() {
 
       {/* (motion.p ... ไม่ต้องแก้) */}
       <motion.p 
-        className="text-gray-300 mb-10 text-lg md:text-xl max-w-lg select-none"
+        className="text-gray-300 mb-10 text-lg md:text-xl max-w-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
