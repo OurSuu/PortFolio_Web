@@ -21,7 +21,7 @@ const allProjects = [
     title: "My Game", 
     type: "Game", 
     details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ยังไม่มีเอามาใส่",
-    imageUrl: "/game-image.png",
+    imageUrl: "/4Ever.jpg",
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
   { 
