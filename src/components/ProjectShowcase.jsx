@@ -25,18 +25,19 @@ export default function ProjectShowcase({ project, index }) {
       // 3. (THE FIX) ลบ 'once: true' ออก เหลือแค่ 'amount'
       viewport={{ amount: 0.3 }}
     >
-      {/* (เนื้อหา Image ... ไม่ต้องแก้) */}
+      {/* (ทำให้ขนาดภาพผลงานเท่ากันหมด) */}
       <motion.div 
         className={`w-full md:w-1/2 
                     ${isEven ? 'md:order-1' : 'md:order-2'}`}
         whileHover={{ scale: 1.03 }}
       >
-        <img 
-          src={project.imageUrl} 
-          alt={project.title} 
-          className="w-full rounded-xl shadow-2xl shadow-[#08fdd8]/10 
-                     border border-white/10" 
-        />
+        <div className="aspect-video w-full h-44 md:h-56 relative overflow-hidden rounded-xl shadow-2xl shadow-[#08fdd8]/10 border border-white/10 bg-gray-900/40">
+          <img 
+            src={project.imageUrl} 
+            alt={project.title} 
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </div>
       </motion.div>
 
       {/* (เนื้อหา Text ... ไม่ต้องแก้) */}
