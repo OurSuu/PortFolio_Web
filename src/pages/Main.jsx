@@ -53,7 +53,7 @@ const profileImages = [
   "/Myphoto3.jpg",  // รูปที่ 2
   "/MyPhoto4.jpg",  // รูปที่ 3
   "/MyPhoto5.jpg",   // รูปที่ 4
-  "/MyPhoto6.jpg"
+  "/Myphoto6.jpg"
 ];
 
 export default function Main() {
