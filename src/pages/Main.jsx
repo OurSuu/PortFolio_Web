@@ -1,14 +1,14 @@
 // src/pages/Main.jsx
 
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimatePresence } from "framer-motion"; // 1. เพิ่ม AnimatePresence
 import ParticleBackground from "../components/ParticleBackground.jsx";
 import ProjectShowcase from "../components/ProjectShowcase.jsx";
 import { FaGithub, FaYoutube } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // 2. เพิ่ม useState
 
 // Animation Variants
 const fadeInUp = {
-  hidden: { opacity: 0, y: 50 }, // เพิ่มระยะ y ให้ดูมีการเคลื่อนไหวชัดขึ้น
+  hidden: { opacity: 0, y: 50 },
   visible: { 
     opacity: 1, 
     y: 0,
@@ -47,8 +47,16 @@ const allProjects = [
   },
 ];
 
-export default function Main() {
+// 3. เตรียมรูปภาพของคุณที่นี่
+const profileImages = [
+  "/photo2.jpg",  // รูปที่ 1
+  "/Myphoto3.jpg",  // รูปที่ 2
+  "/MyPhoto4.jpg",  // รูปที่ 3
+  "/MyPhoto5.jpg",   // รูปที่ 4
+  "/MyPhoto6.jpg"
+];
 
+export default function Main() {
   function ProjectTitleSelectable({ title }) {
     return <span className="select-text">{title}</span>;
   }
@@ -62,29 +70,40 @@ export default function Main() {
 
   useEffect(() => {
     controls.start({
-      rotate: [0, 5, -5, 0], // ลดองศาลงนิดนึงให้ดูนุ่มนวลขึ้น
+      rotate: [0, 5, -5, 0],
       scale: [1, 1.05, 0.95, 1],
       filter: [
         "grayscale(0.85) contrast(1.25) brightness(0.85)",
-        "grayscale(0) contrast(1.1) brightness(1)", // ช่วงกลางให้เห็นสีจริงบ้าง
+        "grayscale(0) contrast(1.1) brightness(1)",
         "grayscale(0.85) contrast(1.25) brightness(0.85)"
       ],
       transition: {
-        duration: 6, // ช้าลงหน่อยให้ดู Relax
+        duration: 6,
         times: [0, 0.5, 1],
         repeat: Infinity,
         ease: "easeInOut"
       }
     });
   }, [controls]);
-  
+
+  // 4. Logic การสลับรูป
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % profileImages.length);
+    }, 4000); // เปลี่ยนรูปทุก 4 วินาที
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen px-6 md:px-20 py-10 pt-32 
                     relative flex flex-col gap-20 md:gap-32 select-none overflow-hidden"> 
       
       <ParticleBackground />
 
-      {/* --- About Me (แก้ไขใหม่) --- */}
+      {/* --- About Me --- */}
       <motion.div 
         className="flex flex-col md:flex-row items-center gap-10 md:gap-16 
                    max-w-5xl mx-auto p-8 md:p-12 
@@ -95,19 +114,33 @@ export default function Main() {
         whileInView="visible"
         viewport={{ once: false, amount: 0.3 }}
       >
-        {/* Profile Picture */}
-        <div className="relative group">
+        {/* Profile Picture Section */}
+        <div className="relative group w-40 h-40 md:w-56 md:h-56">
           {/* กรอบเรืองแสงด้านหลังรูป */}
           <div className="absolute -inset-1 bg-gradient-to-r from-[#08fdd8] to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
           
-          <motion.img 
-            src="/photo2.jpg"
-            alt="Noppanat's Profile"
-            className="relative w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover 
-                       border-2 border-white/20 shadow-2xl z-10"
+          {/* 5. ย้าย Animation (controls) มาไว้ที่กรอบ Div นี้แทน เพื่อให้มันขยับต่อเนื่องไม่สะดุด */}
+          <motion.div 
+            className="relative w-full h-full rounded-2xl overflow-hidden 
+                       border-2 border-white/20 shadow-2xl z-10 bg-gray-800"
             animate={controls}
             whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
-          />
+          >
+            {/* รูปภาพข้างในใช้ AnimatePresence เพื่อทำ Crossfade */}
+            <AnimatePresence mode="popLayout">
+              <motion.img 
+                key={currentImageIndex}
+                src={profileImages[currentImageIndex]}
+                alt="Noppanat's Profile"
+                className="absolute inset-0 w-full h-full object-cover"
+                // Animation เฉพาะการเปลี่ยนรูป (Fade)
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              />
+            </AnimatePresence>
+          </motion.div>
         </div>
         {/* Text Content */}
         <div className="flex-1 flex flex-col text-center md:text-left">
@@ -143,7 +176,6 @@ export default function Main() {
           viewport={{ once: false }}
         >
           My Works
-          {/* ขีดเส้นใต้ตกแต่ง */}
           <span className="block h-1 w-24 bg-[#08fdd8] mt-4 mx-auto rounded-full"></span>
         </motion.h2>
 
