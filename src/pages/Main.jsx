@@ -21,7 +21,7 @@ const allProjects = [
     title: "My Game", 
     type: "Game", 
     details: "รายละเอียดของเกมแรก...\n- พัฒนาด้วย Unity\n- ยังไม่มีเอามาใส่",
-    imageUrl: "/4Ever.jpg",
+    imageUrl: "/4Ever.jpg", 
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
   { 
@@ -44,6 +44,13 @@ const allProjects = [
     details: "TaxEasy คือเว็บคำนวณภาษีสำหรับแม่ค้าออนไลน์ ใช้งานฟรี ไม่ต้องสมัครสมาชิก ใช้ง่าย ปลอดภัย ไม่มีบันทึกข้อมูลส่วนตัว\n- พัฒนาด้วย React + Tailwind CSS\n- มีแผนจะใส่ Google AdSense ในอนาคต\n- หากมีงบประมาณจะเปลี่ยนเป็นโดเมน .com",
     imageUrl: "/tax-easy.png",
     link: "https://tax-easy-rose.vercel.app/"
+  },
+  { 
+    title: "Rhythm Coder - เว็บเกมแนว Rhythm เล่นบนเว็บ",
+    type: "Game",
+    details: "เป็นเว็บไซต์เกี่ยวกับเกมแนว Rhythm ที่สามารถเล่นได้บนเว็บ พัฒนาโดย React โค้ดเขียนเองทั้งหมด มีระบบเล่นเพลง, กดโน้ต, คะแนน, เอฟเฟกต์แสงสี และฟีเจอร์สำหรับผู้เล่นสายเกมดนตรี",
+    imageUrl: "/RhythmCoder.png",
+    link: "https://rhythm-coder.vercel.app/"
   },
 ];
 
