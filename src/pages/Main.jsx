@@ -56,7 +56,7 @@ const allProjects = [
 
 // 3. เตรียมรูปภาพของคุณที่นี่
 const profileImages = [
-  "/photo2.jpg",  // รูปที่ 1
+                      // รูปที่ 1
   "/Myphoto3.jpg",  // รูปที่ 2
   "/MyPhoto4.jpg",  // รูปที่ 3
   "/MyPhoto5.jpg",   // รูปที่ 4
