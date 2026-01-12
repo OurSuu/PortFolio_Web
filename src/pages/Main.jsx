@@ -52,6 +52,13 @@ const allProjects = [
     imageUrl: "/RhythmCoder.png",
     link: "https://rhythm-coder.vercel.app/"
   },
+  { 
+    title: "Quest-Log-App - ToDo app",
+    type: "App",
+    details: "เป็นเว็บไซต์ Quest Log แนว ToDo สำหรับสาย Productivity มีระบบเพิ่ม ลบ แก้ไขงาน พร้อม UI/UX ที่ได้แรงบันดาลใจจากเกม ใช้ React, Tailwind CSS ในการพัฒนา",
+    imageUrl: "/QuestLogApp.png",
+    link: "https://github.com/OurSuu/Quest-Log-App.git"
+  },
 ];
 
 // 3. เตรียมรูปภาพของคุณที่นี่

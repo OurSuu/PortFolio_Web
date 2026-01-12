@@ -63,7 +63,7 @@ export default function ProjectShowcase({ project, index }) {
               className="px-5 py-2 bg-[#08fdd8] text-black rounded-lg font-semibold 
                          transition-all hover:bg-opacity-80 hover:scale-105"
             >
-              Visit Website
+              {project.type === "App" ? "Download App" : "Visit Website"}
             </a>
           )}
           {project.videoUrl && (
